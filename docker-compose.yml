@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_ROOT_USERNAME: adm
+      MONGO_ROOT_PASSWORD: 12345
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - minha-rede
+
+  python-app:
+    build: .
+    container_name: python-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - minha-rede
+
+volumes:
+  mongodb_data:
+
+networks:
+  minha-rede:
+    driver: bridge
